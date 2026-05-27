@@ -12,7 +12,13 @@ router.post("/signup", async (req, res) => {
     try {
 
         const data = req.body;
+        const { role } = data;
 
+        if (role && role === "admin") {
+            return res.status(403).json({
+                message: "Forbidden: Cannot register as admin"
+            });
+        }
         const user = new User(data);
 
         const response = await user.save();
